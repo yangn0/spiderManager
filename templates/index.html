@@ -17,7 +17,7 @@
     <input id="pause" type="button" value="暂停">
     <input id="stop" type="button" value="终止">
 
-    启动时间：<input id="startTime" type="text" name="startTime" />
+    启动时间：<input id="startTime" type="datetime-local" name="startTime" />
     关键词：<textarea id="keyword" type="text" name="keyword"></textarea>
     页数：<input id="page" type="text" name="page" />
 
@@ -96,6 +96,7 @@
         );
 
     $("#submit").click(function () {
+            var stTime=new Date($("#startTime").val()).getTime()/1000
             $.ajax(
                 {
                     url: "/set",
@@ -104,7 +105,7 @@
                     contentType: "application/json;charset=utf-8",
                     data: JSON.stringify({
                         "pcNum":$("#pcNum").val(),
-                        "startTime":$("#startTime").val(),
+                        "startTime":stTime,
                         "keyword":$("#keyword").val(),
                         "page":$("#page").val(),
                     }),
