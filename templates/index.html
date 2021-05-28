@@ -142,6 +142,7 @@
         }
     });
 
+    
     $.ajax({
         async: true,
         type: 'GET',
@@ -150,7 +151,10 @@
         success: function (data) {
             console.log(data)
             for (var key in data['data']) {
+                var newDate = new Date();
+                newDate.setTime(parseInt(data['data'][key]["startTime"]) * 1000);
                 var item = data['data'][key];
+                item['startTime']=newDate.toString();
                 $("#set").append("\
                     <li>"+JSON.stringify(item)+"</li>\
                     ");
