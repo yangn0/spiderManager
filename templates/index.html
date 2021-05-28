@@ -52,6 +52,48 @@
                 })
         }
         );
+        $("#pause").click(function () {
+            $.ajax(
+                {
+                    url: "/set",
+                    type: "POST",
+                    dataType: "json",
+                    contentType: "application/json;charset=utf-8",
+                    data: JSON.stringify({
+                        "pcNum":$("#pcNum").val(),
+                        'start':0,
+                    }),
+                    async: true,
+                    success: function (returndata) {
+                        alert(returndata.msg);
+                    },
+                    error: function (returndata) {
+                        alert("失败！")
+                    }
+                })
+        }
+        );
+        $("#stop").click(function () {
+            $.ajax(
+                {
+                    url: "/set",
+                    type: "POST",
+                    dataType: "json",
+                    contentType: "application/json;charset=utf-8",
+                    data: JSON.stringify({
+                        "pcNum":$("#pcNum").val(),
+                        'start':-1,
+                    }),
+                    async: true,
+                    success: function (returndata) {
+                        alert(returndata.msg);
+                    },
+                    error: function (returndata) {
+                        alert("失败！")
+                    }
+                })
+        }
+        );
 
     $("#submit").click(function () {
             $.ajax(
