@@ -82,7 +82,7 @@
     $.ajax({
         async: true,
         type: 'GET',
-        url: 'http://127.0.0.1:5000/status',
+        url: '/status',
         dataType: 'json',
         success: function (data) {
             console.log(data)
@@ -102,7 +102,7 @@
     $.ajax({
         async: true,
         type: 'GET',
-        url: 'http://127.0.0.1:5000/set',
+        url: '/set',
         dataType: 'json',
         success: function (data) {
             console.log(data)
