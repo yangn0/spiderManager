@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery/1.9.1/jquery.js') }}"></script>
+    <title>爬虫管理系统</title>
+</head>
+
+<body>
+
+    机器号：<input id="pcNum" type="text" name="pcNum" />
+
+    <input id="start" type="button" value="开始">
+    <input id="pause" type="button" value="暂停">
+    <input id="stop" type="button" value="终止">
+
+    启动时间：<input id="startTime" type="text" name="startTime" />
+    关键词：<textarea id="keyword" type="text" name="keyword"></textarea>
+    页数：<input id="page" type="text" name="page" />
+
+    <input id="submit" type="submit" value="Submit" />
+    <hr />
+    爬虫任务状态：
+    <div id="status"></div>
+    <hr />
+    爬虫任务设置：
+    <div id="set"></div>
+</body>
+
+<script>
+    $("#start").click(function () {
+            $.ajax(
+                {
+                    url: "/set",
+                    type: "POST",
+                    dataType: "json",
+                    contentType: "application/json;charset=utf-8",
+                    data: JSON.stringify({
+                        "pcNum":$("#pcNum").val(),
+                        'start':1,
+                    }),
+                    async: true,
+                    success: function (returndata) {
+                        alert(returndata.msg);
+                    },
+                    error: function (returndata) {
+                        alert("失败！")
+                    }
+                })
+        }
+        );
+
+    $("#submit").click(function () {
+            $.ajax(
+                {
+                    url: "/set",
+                    type: "POST",
+                    dataType: "json",
+                    contentType: "application/json;charset=utf-8",
+                    data: JSON.stringify({
+                        "pcNum":$("#pcNum").val(),
+                        "startTime":$("#startTime").val(),
+                        "keyword":$("#keyword").val(),
+                        "page":$("#page").val(),
+                    }),
+                    async: true,
+                    success: function (returndata) {
+                        alert(returndata.msg);
+                    },
+                    error: function (returndata) {
+
+                        alert("失败！")
+
+                    }
+                })
+        }
+        );
+
+    $.ajax({
+        async: true,
+        type: 'GET',
+        url: 'http://127.0.0.1:5000/status',
+        dataType: 'json',
+        success: function (data) {
+            console.log(data)
+            for (var key in data['data']) {
+                var item = data['data'][key];
+                $("#status").append("\
+                    <li>"+JSON.stringify(item)+"</li>\
+                    ");
+            }
+
+        },
+        error: function () {
+            console.log('getStatus failed');
+        }
+    });
+
+    $.ajax({
+        async: true,
+        type: 'GET',
+        url: 'http://127.0.0.1:5000/set',
+        dataType: 'json',
+        success: function (data) {
+            console.log(data)
+            for (var key in data['data']) {
+                var item = data['data'][key];
+                $("#set").append("\
+                    <li>"+JSON.stringify(item)+"</li>\
+                    ");
+            }
+        },
+        error: function () {
+            console.log('getSet failed');
+        }
+    });
+</script>
+
+</html>
