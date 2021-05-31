@@ -24,103 +24,119 @@
     <input id="submit" type="submit" value="Submit" />
     <hr />
     爬虫任务状态：
-    <div id="status"></div>
+    <table border="1" id="status">
+        <tr>
+            <th>机器号</th>
+            <th>当前页数</th>
+            <th>当前关键词</th>
+            <th>更新时间</th>
+            <th>最新商品id</th>
+        </tr>
+    </table>
     <hr />
     爬虫任务设置：
-    <div id="set"></div>
+    <table border="1" id="set">
+        <tr>
+            <th>机器号</th>
+            <th>运行状态（1启动、0暂停、-1停止）</th>
+            <th>开始时间</th>
+            <th>页数</th>
+            <th>关键词</th>
+        </tr>
+    </table>
 </body>
 
 <script>
     $("#start").click(function () {
-            $.ajax(
-                {
-                    url: "/set",
-                    type: "POST",
-                    dataType: "json",
-                    contentType: "application/json;charset=utf-8",
-                    data: JSON.stringify({
-                        "pcNum":$("#pcNum").val(),
-                        'start':1,
-                    }),
-                    async: true,
-                    success: function (returndata) {
-                        alert(returndata.msg);
-                    },
-                    error: function (returndata) {
-                        alert("失败！")
-                    }
-                })
-        }
-        );
-        $("#pause").click(function () {
-            $.ajax(
-                {
-                    url: "/set",
-                    type: "POST",
-                    dataType: "json",
-                    contentType: "application/json;charset=utf-8",
-                    data: JSON.stringify({
-                        "pcNum":$("#pcNum").val(),
-                        'start':0,
-                    }),
-                    async: true,
-                    success: function (returndata) {
-                        alert(returndata.msg);
-                    },
-                    error: function (returndata) {
-                        alert("失败！")
-                    }
-                })
-        }
-        );
-        $("#stop").click(function () {
-            $.ajax(
-                {
-                    url: "/set",
-                    type: "POST",
-                    dataType: "json",
-                    contentType: "application/json;charset=utf-8",
-                    data: JSON.stringify({
-                        "pcNum":$("#pcNum").val(),
-                        'start':-1,
-                    }),
-                    async: true,
-                    success: function (returndata) {
-                        alert(returndata.msg);
-                    },
-                    error: function (returndata) {
-                        alert("失败！")
-                    }
-                })
-        }
-        );
+        $.ajax(
+            {
+                url: "/set",
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json;charset=utf-8",
+                data: JSON.stringify({
+                    "pcNum": $("#pcNum").val(),
+                    'start': 1,
+                }),
+                async: true,
+                success: function (returndata) {
+                    alert(returndata.msg);
+                },
+                error: function (returndata) {
+                    alert("失败！")
+                }
+            })
+    }
+    );
+    $("#pause").click(function () {
+        $.ajax(
+            {
+                url: "/set",
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json;charset=utf-8",
+                data: JSON.stringify({
+                    "pcNum": $("#pcNum").val(),
+                    'start': 0,
+                }),
+                async: true,
+                success: function (returndata) {
+                    alert(returndata.msg);
+                },
+                error: function (returndata) {
+                    alert("失败！")
+                }
+            })
+    }
+    );
+    $("#stop").click(function () {
+        $.ajax(
+            {
+                url: "/set",
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json;charset=utf-8",
+                data: JSON.stringify({
+                    "pcNum": $("#pcNum").val(),
+                    'start': -1,
+                }),
+                async: true,
+                success: function (returndata) {
+                    alert(returndata.msg);
+                },
+                error: function (returndata) {
+                    alert("失败！")
+                }
+            })
+    }
+    );
 
     $("#submit").click(function () {
-            var stTime=new Date($("#startTime").val()).getTime()/1000
-            $.ajax(
-                {
-                    url: "/set",
-                    type: "POST",
-                    dataType: "json",
-                    contentType: "application/json;charset=utf-8",
-                    data: JSON.stringify({
-                        "pcNum":$("#pcNum").val(),
-                        "startTime":stTime,
-                        "keyword":$("#keyword").val(),
-                        "page":$("#page").val(),
-                    }),
-                    async: true,
-                    success: function (returndata) {
-                        alert(returndata.msg);
-                    },
-                    error: function (returndata) {
+        var stTime = new Date($("#startTime").val()).getTime() / 1000
+        $.ajax(
+            {
+                url: "/set",
+                type: "POST",
+                dataType: "json",
+                contentType: "application/json;charset=utf-8",
+                data: JSON.stringify({
+                    "pcNum": $("#pcNum").val(),
+                    "startTime": stTime,
+                    "keyword": $("#keyword").val(),
+                    "page": $("#page").val(),
+                }),
+                async: true,
+                success: function (returndata) {
+                    alert(returndata.msg);
+                },
+                error: function (returndata) {
 
-                        alert("失败！")
+                    alert("失败！")
 
-                    }
-                })
-        }
-        );
+                }
+            })
+    }
+    );
 
     $.ajax({
         async: true,
@@ -131,8 +147,15 @@
             console.log(data)
             for (var key in data['data']) {
                 var item = data['data'][key];
+                //JSON.stringify(item)
                 $("#status").append("\
-                    <li>"+JSON.stringify(item)+"</li>\
+                    <tr>"+
+                    "<th>" + item["pcNum"] + "</th>" +
+                    "<th>" + item["nowPage"] + "</th>" +
+                    "<th>" + item["nowKeyword"] + "</th>" +
+                    "<th>" + item["lastTime"] + "</th>" +
+                    "<th>" + item["lastId"] + "</th>" +
+                    "</tr>\
                     ");
             }
 
@@ -142,7 +165,7 @@
         }
     });
 
-    
+
     $.ajax({
         async: true,
         type: 'GET',
@@ -154,9 +177,16 @@
                 var newDate = new Date();
                 newDate.setTime(parseInt(data['data'][key]["startTime"]) * 1000);
                 var item = data['data'][key];
-                item['startTime']=newDate.toString();
+                item['startTime'] = newDate.toString();
+                //JSON.stringify(item)
                 $("#set").append("\
-                    <li>"+JSON.stringify(item)+"</li>\
+                <tr>"+
+                    "<th>" + item["pcNum"] + "</th>" +
+                    "<th>" + item["start"] + "</th>" +
+                    "<th>" + item["startTime"] + "</th>" +
+                    "<th>" + item["page"] + "</th>" +
+                    "<th>" + item["keyword"] + "</th>" +
+                    "</tr>\
                     ");
             }
         },
