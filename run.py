@@ -38,6 +38,8 @@ def set():
         for key in data:
             if data[key] == '':
                 continue
+            if data['pcNum'] not in machine:
+                machine[data['pcNum']]=dict()
             machine[data['pcNum']][key] = data[key]
         return jsonify({"code": 200, "msg": "ok"})
 
