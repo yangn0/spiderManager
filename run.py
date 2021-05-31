@@ -54,6 +54,8 @@ def status():
         for key in data:
             if data[key] == '':
                 continue
+            if data['pcNum'] not in statusDict:
+                statusDict[data['pcNum']]=dict()
             statusDict[data['pcNum']][key] = data[key]
         return jsonify({"code": 200, "msg": "ok"})
 
