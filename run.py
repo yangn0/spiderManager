@@ -31,8 +31,12 @@ def index():
 
 @app.route('/set', methods=["POST", "GET"])
 def set():
-    with open("set.json","r") as f:
-        machine=json.load(f)
+    try:
+        with open("set.json","r") as f:
+            machine=json.load(f)
+    except:
+        machine=dict()
+        print("文件不存在")
     if request.method == 'POST':
         data = request.get_json()
         print(data)
@@ -52,8 +56,12 @@ def set():
 
 @app.route('/status', methods=["POST", "GET"])
 def status():
-    with open("status.json","r") as f:
-        statusDict=json.load(f)
+    try:
+        with open("status.json","r") as f:
+            statusDict=json.load(f)
+    except:
+        statusDict=dict()
+        print("文件不存在")
     if request.method == 'POST':
         data = request.get_json()
         print(data)
