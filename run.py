@@ -31,15 +31,19 @@ def index():
 
 @app.route('/set', methods=["POST", "GET"])
 def set():
+    with open("set.json","r") as f:
+        machine=json.load(f)
     if request.method == 'POST':
         data = request.get_json()
         print(data)
         for key in data:
-            if data[key] == '':
+            if data[key] == '' or data[key]==None:
                 continue
             if data['pcNum'] not in machine:
                 machine[data['pcNum']]=dict()
             machine[data['pcNum']][key] = data[key]
+        with open("set.json","w") as f:
+            json.dump(machine,f)
         return jsonify({"code": 200, "msg": "ok"})
 
     if request.method == 'GET':
@@ -48,6 +52,8 @@ def set():
 
 @app.route('/status', methods=["POST", "GET"])
 def status():
+    with open("status.json","r") as f:
+        statusDict=json.load(f)
     if request.method == 'POST':
         data = request.get_json()
         print(data)
@@ -57,6 +63,8 @@ def status():
             if data['pcNum'] not in statusDict:
                 statusDict[data['pcNum']]=dict()
             statusDict[data['pcNum']][key] = data[key]
+        with open("status.json","w") as f:
+            json.dump(statusDict,f)
         return jsonify({"code": 200, "msg": "ok"})
 
     if request.method == 'GET':
